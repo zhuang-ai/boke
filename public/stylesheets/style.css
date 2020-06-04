@@ -1,0 +1,72 @@
+*{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+}
+body{
+  background: #00B7FF;
+}
+.jz {
+  border-radius: 15px;
+  width: 450px;
+  height: 100%;
+  margin: 20px auto;
+  background: white;
+  padding-bottom: 50px;
+
+}
+.jz_s{
+  width: 80%;
+  margin: 15px auto;
+}
+.jz button{
+  width: 100%;
+  border-radius: 20px;
+  border: none;
+  margin-top: 10px;
+  height: 50px;
+  background: #00B7FF;
+  font-size: 15px;
+  color: white;
+}
+.big_font{
+  font-size: 30px;
+  padding: 50px;
+  text-align: center;
+}
+.user p{
+  font-size: 14px;
+  width: 100%;
+}
+input{
+  padding-left: 10px;
+  display: block;
+  font-size: 16px;
+  width:calc(100% - 10px);
+  height: 40px;
+  margin: 15px auto;
+}
+.a_{
+  font-size: 12px;
+  color: darkgray;
+  display: block;
+}
+input[type="radio"],input[type="checkbox"]{
+  display: inline-block;
+  padding: 10px;
+  margin: 20px;
+  width: 20px;
+  height: 20px;
+}
+.jizhu{
+  display: flex;
+  font-size: 14px;
+  margin:10px 0 ;
+}
+input[type="checkbox"]{
+  padding: 0 ;
+  margin: 0 10px;
+}
+
+

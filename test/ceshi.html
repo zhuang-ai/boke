@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul id="ul"></ul>
+</body>
+<script src="../public/plugin/jQuery/jquery.js"></script>
+<script>
+    var myli = document.createElement("li");
+    myli.innerHTML = `<div>测试内容</div>`
+    myli.className = 'test'
+    myli.className +=' test2'
+    $("#ul").append(myli)
+</script>
+</html>

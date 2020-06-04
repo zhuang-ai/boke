@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+    <meta charset="UTF-8">
+    <title>注册页</title>
+    <script src="../plugin/jQuery/jquery.js"></script>
+    <script src="../plugin/future/future.js"></script>
+</head>
+<body>
+<div id="regist" class="jz">
+    <div id="regist_s" class="jz_s">
+        <p  class="big_font">注册</p>
+        <div class="user">
+            <p>用户名</p>
+            <input id="name" placeholder="请输入用户名">
+        </div>
+        <div class="user">
+            <p>昵称</p>
+            <input id="nick" placeholder="请输入昵称">
+        </div>
+        <div class="user">
+            <p>密码</p>
+            <input id="pwd" type="password" placeholder="请输入密码">
+        </div>
+        <div class="user">
+            <p>性别</p>
+            <input name="sex" value="男" type="radio">男
+            <input name="sex" value="女" type="radio">女
+        </div>
+        <a href="login.html" class="a_">返回登录</a>
+        <button type="button" onclick="regist();">注册</button>
+    </div>
+
+</div>
+</body>
+
+<script>
+    let regist = function(){
+        let name = $('#name').val();
+        let nick = $('#nick').val();
+        let pwd = $('#pwd').val();
+        let sex = $('[name = "sex"]:checked').val();
+        let parmas = {name:name,nick:nick,sex:sex,pwd:pwd};
+        console.log(parmas);
+        myAjax({
+            url:"/users/regist",
+            data:parmas,
+            success:function (result) {
+                alert(result.data)
+            }
+        })
+    };
+</script>
+</html>

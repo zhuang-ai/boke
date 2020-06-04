@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:image/ico;base64,aWNv">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/article.css">
+    <meta charset="UTF-8">
+    <title>我的博客</title>
+</head>
+<body>
+<div id="top">
+    <span class="top_li check">首页</span>
+    <span class="top_li">vue</span>
+    <span class="top_li">javaScript</span>
+    <span class="top_li">Nodejs</span>
+</div>
+<div id="left">
+    <p class="huida">用户信息</p>
+    <p id="nick_"></p>
+    <button class="btn out">退出登录</button>
+</div>
+<div id="right">
+    <ul id="article">
+    </ul>
+    <div id="content_add">
+        <input id="title" placeholder="请输入标题">
+        <div id="content_f">
+            <textarea id="content" ></textarea>
+            <div id="tips">请输入内容</div>
+        </div>
+        <div id="add_class">
+            <div class="class">vue</div>
+            <div class="class">javaScript</div>
+            <div class="class">Nodejs</div>
+        </div>
+        <button type="button" class="btn " onclick="addArticle();">提交文章</button>
+    </div>
+
+</div>
+
+</body>
+<script src="../plugin/jQuery/jquery.js"></script>
+<script src="../plugin/future/future.js"></script>
+<script>
+    $(".class").click(function () {
+        if($(this).hasClass("catch")){
+            $(this).removeClass("catch")
+        }
+        else {
+            $(this).addClass("catch")
+        }
+    })
+    $(".top_li").click(function () {
+        $(".top_li").css({"border-bottom":"none"})
+        $(this).css({"border-bottom":"skyblue 2px solid"})
+        if($(this).text() === "首页"){
+            $(".article_li").css({"display":"block"})
+        }
+        else {
+           let title = $(this).text();
+            $(".article_li").css({"display":"none"});
+            $(`.${title}`).css({"display":"block"});
+        }
+        }
+    )
+    $("#content").focus(function () {
+        $("#tips").css({"display":"none"})
+    })
+    $("#content").blur(function () {
+        if($("#content")[0].value === ''){
+            $("#tips").css({"display":"block"})
+        }
+    })
+
+    $(".out").click(function () {
+        window.location = "./login.html";
+        localStorage.removeItem("token");
+    })
+    //获取用户昵称
+    myAjax({
+        url:'/article/userName',
+        success:function (result) {
+            if (result.code === 'ok') {
+                $("#nick_")[0].innerText = result.data + '，欢迎您'
+            }
+            else if(result.code === 'error'){
+                alert(result.data)
+                window.location = "./login.html";
+            }
+        }
+    })
+    $(document).on('click', '.ck', function(){
+        if($(this).text() === "查看全文"){
+            console.log($(this).parent().siblings())
+            $(this).parent().siblings(".article_c1").removeClass("article_c2")
+            $(this).text("收起")
+        }
+        else {
+            console.log(2)
+            $(this).parent().siblings(".article_c1").addClass("article_c2")
+            $(this).text("查看全文")
+        }
+
+    });
+    //获取并渲染文章
+    let xrwz = function(){
+        myAjax({
+            url:'/article/xr',
+            success:function (result) {
+                if(result.code === 'ok'){
+                    $("#article").empty()
+                    result.data.forEach(v=>{
+                        let myli = document.createElement("li");
+                        myli.className = "article_li"
+                        let className = JSON.parse(v.class)
+                        if(className){
+                            if(className.class.length>=1){
+                                className.class.forEach(v=>{
+                                    myli.classList.add(v)
+                                })
+                            }
+                        }
+                        myli.innerHTML =
+                      `
+                        <div class="article_title huida"> ${v.title}</div>
+                        <div class="article_c1 article_c2 "> ${v.content}</div>
+                        <div class="acticle_d">
+                            <button class="btn ck" type="button">查看全文</button>
+                            <span class="article_tu">
+                                <span class="acticle_t">${v.create_time}</span>
+                                <span class="acticle_u">${v.create_user}</span>
+                            </span>
+
+                        </div>
+                    </li>
+                `
+                        $("#article").append(myli)
+                    })
+                }
+                else if(result.code === 'error'){
+                    alert(result.data)
+                }
+            }
+        })
+    }
+    xrwz();
+    //上传文章
+    let addArticle = function () {
+        let title = $('#title').val();
+        let content = $('#content').val();
+        let className = $(".class");
+        let arr = []
+        $.each(className,function (i,v) {
+            if($(v).hasClass("catch")){
+                arr.push($(v).text())
+            }
+        })
+        let arr2 = {"class":arr};
+        myAjax({
+            url:'/article/add',
+            data:{content:content,title:title,className:JSON.stringify(arr2)},
+            success:function (result) {
+                if (result.code === 'ok'){
+                    xrwz();
+                    $('#title').val('');
+                    $('#content').val('');
+                    $("#tips").css({"display":"block"});
+                    $.each(className,function (i,v) {
+                        if($(v).hasClass("catch")){
+                            $(v).removeClass("catch")
+                        }
+                    })
+                }
+                else if(result.code === 'error'){
+                    alert(result.data)
+                }
+            }
+        })
+    }
+</script>
+</html>
